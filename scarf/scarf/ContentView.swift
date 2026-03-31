@@ -34,6 +34,8 @@ struct ContentView: View {
             GatewayView()
         case .cron:
             CronView()
+        case .health:
+            HealthView()
         case .logs:
             LogsView()
         case .settings:

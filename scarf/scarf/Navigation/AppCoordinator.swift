@@ -11,6 +11,7 @@ enum SidebarSection: String, CaseIterable, Identifiable {
     case tools = "Tools"
     case gateway = "Gateway"
     case cron = "Cron"
+    case health = "Health"
     case logs = "Logs"
     case settings = "Settings"
 
@@ -28,6 +29,7 @@ enum SidebarSection: String, CaseIterable, Identifiable {
         case .tools: return "wrench.and.screwdriver"
         case .gateway: return "antenna.radiowaves.left.and.right"
         case .cron: return "clock.arrow.2.circlepath"
+        case .health: return "stethoscope"
         case .logs: return "doc.text"
         case .settings: return "gearshape"
         }
