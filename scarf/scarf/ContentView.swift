@@ -16,6 +16,8 @@ struct ContentView: View {
         switch coordinator.selectedSection {
         case .dashboard:
             DashboardView()
+        case .insights:
+            InsightsView()
         case .sessions:
             SessionsView()
         case .activity:

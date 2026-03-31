@@ -2,6 +2,7 @@ import Foundation
 
 enum SidebarSection: String, CaseIterable, Identifiable {
     case dashboard = "Dashboard"
+    case insights = "Insights"
     case sessions = "Sessions"
     case activity = "Activity"
     case chat = "Chat"
@@ -16,6 +17,7 @@ enum SidebarSection: String, CaseIterable, Identifiable {
     var icon: String {
         switch self {
         case .dashboard: return "gauge.with.dots.needle.33percent"
+        case .insights: return "chart.bar"
         case .sessions: return "bubble.left.and.bubble.right"
         case .activity: return "bolt.horizontal"
         case .chat: return "text.bubble"
