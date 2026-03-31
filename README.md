@@ -26,7 +26,7 @@ A native macOS companion app for the [Hermes AI agent](https://github.com/hermes
 ## Building
 
 ```bash
-git clone https://github.com/yourusername/scarf.git
+git clone https://github.com/awizemann/scarf.git
 cd scarf/scarf
 open scarf.xcodeproj
 ```
