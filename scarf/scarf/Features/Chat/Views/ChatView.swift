@@ -56,7 +56,16 @@ struct ChatView: View {
                         Button {
                             viewModel.resumeSession(session.id)
                         } label: {
-                            Text("\(session.displayTitle) — \(session.id.prefix(16))")
+                            HStack {
+                                Text(viewModel.previewFor(session))
+                                    .lineLimit(1)
+                                if let date = session.startedAt {
+                                    Text("·")
+                                        .foregroundStyle(.secondary)
+                                    Text(date, style: .relative)
+                                        .foregroundStyle(.secondary)
+                                }
+                            }
                         }
                     }
                 }

@@ -5,6 +5,7 @@ final class SessionsViewModel {
     private let dataService = HermesDataService()
 
     var sessions: [HermesSession] = []
+    var sessionPreviews: [String: String] = [:]
     var selectedSession: HermesSession?
     var messages: [HermesMessage] = []
     var searchText = ""
@@ -15,6 +16,13 @@ final class SessionsViewModel {
         let opened = await dataService.open()
         guard opened else { return }
         sessions = await dataService.fetchSessions(limit: 500)
+        sessionPreviews = await dataService.fetchSessionPreviews(limit: 500)
+    }
+
+    func previewFor(_ session: HermesSession) -> String {
+        if let title = session.title, !title.isEmpty { return title }
+        if let preview = sessionPreviews[session.id], !preview.isEmpty { return preview }
+        return session.id
     }
 
     func selectSession(_ session: HermesSession) async {

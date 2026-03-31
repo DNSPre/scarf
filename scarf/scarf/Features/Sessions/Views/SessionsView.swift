@@ -62,7 +62,7 @@ struct SessionsView: View {
                 }
             } else {
                 ForEach(viewModel.sessions) { session in
-                    SessionRow(session: session)
+                    SessionRow(session: session, preview: viewModel.previewFor(session))
                         .tag(session.id)
                 }
             }
@@ -73,7 +73,7 @@ struct SessionsView: View {
     @ViewBuilder
     private var sessionDetail: some View {
         if let session = viewModel.selectedSession {
-            SessionDetailView(session: session, messages: viewModel.messages)
+            SessionDetailView(session: session, messages: viewModel.messages, preview: viewModel.previewFor(session))
                 .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
         } else {
             ContentUnavailableView("Select a Session", systemImage: "bubble.left.and.bubble.right", description: Text("Choose a session from the list"))

@@ -3,6 +3,7 @@ import SwiftUI
 struct SessionDetailView: View {
     let session: HermesSession
     let messages: [HermesMessage]
+    var preview: String?
 
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
@@ -15,7 +16,7 @@ struct SessionDetailView: View {
 
     private var sessionHeader: some View {
         VStack(alignment: .leading, spacing: 6) {
-            Text(session.displayTitle)
+            Text(preview ?? session.displayTitle)
                 .font(.title3.bold())
             HStack(spacing: 16) {
                 Label(session.source, systemImage: session.sourceIcon)

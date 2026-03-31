@@ -10,6 +10,7 @@ final class DashboardViewModel {
         totalInputTokens: 0, totalOutputTokens: 0, totalCostUSD: 0
     )
     var recentSessions: [HermesSession] = []
+    var sessionPreviews: [String: String] = [:]
     var config = HermesConfig.empty
     var gatewayState: GatewayState?
     var hermesRunning = false
@@ -21,6 +22,7 @@ final class DashboardViewModel {
         if opened {
             stats = await dataService.fetchStats()
             recentSessions = await dataService.fetchSessions(limit: 5)
+            sessionPreviews = await dataService.fetchSessionPreviews(limit: 5)
             await dataService.close()
         }
         config = fileService.loadConfig()

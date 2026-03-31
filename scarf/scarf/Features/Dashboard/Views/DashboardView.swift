@@ -73,7 +73,7 @@ struct DashboardView: View {
                 .buttonStyle(.link)
             }
             ForEach(viewModel.recentSessions) { session in
-                SessionRow(session: session)
+                SessionRow(session: session, preview: viewModel.sessionPreviews[session.id])
                     .contentShape(Rectangle())
                     .onTapGesture {
                         coordinator.selectedSessionId = session.id
@@ -145,6 +145,7 @@ struct StatCard: View {
 
 struct SessionRow: View {
     let session: HermesSession
+    var preview: String?
 
     var body: some View {
         HStack {
@@ -152,7 +153,7 @@ struct SessionRow: View {
                 .foregroundStyle(.secondary)
                 .frame(width: 20)
             VStack(alignment: .leading, spacing: 2) {
-                Text(session.displayTitle)
+                Text(preview ?? session.displayTitle)
                     .lineLimit(1)
                 if let date = session.startedAt {
                     Text(date, style: .relative)

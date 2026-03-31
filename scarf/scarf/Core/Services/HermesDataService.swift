@@ -114,6 +114,34 @@ actor HermesDataService {
         return messages
     }
 
+    func fetchSessionPreviews(limit: Int = 10) -> [String: String] {
+        guard let db else { return [:] }
+        let sql = """
+            SELECT m.session_id, substr(m.content, 1, 100)
+            FROM messages m
+            INNER JOIN (
+                SELECT session_id, MIN(id) as min_id
+                FROM messages
+                WHERE role = 'user' AND content <> ''
+                GROUP BY session_id
+            ) first ON m.id = first.min_id
+            ORDER BY m.timestamp DESC
+            LIMIT ?
+            """
+        var stmt: OpaquePointer?
+        guard sqlite3_prepare_v2(db, sql, -1, &stmt, nil) == SQLITE_OK else { return [:] }
+        defer { sqlite3_finalize(stmt) }
+        sqlite3_bind_int(stmt, 1, Int32(limit))
+
+        var previews: [String: String] = [:]
+        while sqlite3_step(stmt) == SQLITE_ROW {
+            let sessionId = columnText(stmt!, 0)
+            let preview = columnText(stmt!, 1)
+            previews[sessionId] = preview
+        }
+        return previews
+    }
+
     struct SessionStats: Sendable {
         let totalSessions: Int
         let totalMessages: Int

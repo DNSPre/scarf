@@ -7,6 +7,7 @@ final class ChatViewModel {
     private let dataService = HermesDataService()
 
     var recentSessions: [HermesSession] = []
+    var sessionPreviews: [String: String] = [:]
     var terminalView: LocalProcessTerminalView?
     var hasActiveProcess = false
     private var coordinator: Coordinator?
@@ -31,7 +32,14 @@ final class ChatViewModel {
         let opened = await dataService.open()
         guard opened else { return }
         recentSessions = await dataService.fetchSessions(limit: 10)
+        sessionPreviews = await dataService.fetchSessionPreviews(limit: 10)
         await dataService.close()
+    }
+
+    func previewFor(_ session: HermesSession) -> String {
+        if let title = session.title, !title.isEmpty { return title }
+        if let preview = sessionPreviews[session.id], !preview.isEmpty { return preview }
+        return session.id
     }
 
     private func launchTerminal(arguments: [String]) {
