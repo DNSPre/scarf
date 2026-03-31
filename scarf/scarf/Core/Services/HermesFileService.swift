@@ -43,7 +43,8 @@ struct HermesFileService: Sendable {
             streaming: values["display.streaming"] != "false",
             showReasoning: values["display.show_reasoning"] == "true",
             verbose: values["agent.verbose"] == "true",
-            autoTTS: values["voice.auto_tts"] != "false"
+            autoTTS: values["voice.auto_tts"] != "false",
+            silenceThreshold: Int(values["voice.silence_threshold"] ?? "") ?? 200
         )
     }
 
