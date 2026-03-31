@@ -13,6 +13,8 @@
   <img src="https://img.shields.io/badge/macOS-26.2+-blue" alt="macOS">
   <img src="https://img.shields.io/badge/Swift-6-orange" alt="Swift">
   <img src="https://img.shields.io/badge/license-MIT-green" alt="License">
+  <br><br>
+  <a href="https://www.buymeacoffee.com/awizemann"><img src="https://img.buymeacoffee.com/button-api/?text=Buy me a coffee&emoji=&slug=awizemann&button_colour=FFDD00&font_colour=000000&font_family=Cookie&outline_colour=000000&coffee_colour=ffffff" height="28"></a>
 </p>
 
 ## Features
@@ -110,6 +112,12 @@ Contributions are welcome. Please open an issue to discuss what you'd like to ch
 3. Commit your changes (`git commit -m 'Add my feature'`)
 4. Push to the branch (`git push origin feature/my-feature`)
 5. Open a Pull Request
+
+## Support
+
+If you find Scarf useful, consider buying me a coffee.
+
+<a href="https://www.buymeacoffee.com/awizemann"><img src="https://img.buymeacoffee.com/button-api/?text=Buy me a coffee&emoji=&slug=awizemann&button_colour=FFDD00&font_colour=000000&font_family=Cookie&outline_colour=000000&coffee_colour=ffffff" height="40"></a>
 
 ## License
 
