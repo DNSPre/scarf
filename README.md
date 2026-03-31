@@ -37,7 +37,18 @@
 
 - macOS 26.2+
 - Xcode 26.3+
-- [Hermes agent](https://github.com/hermes-ai/hermes-agent) installed at `~/.hermes/`
+- [Hermes agent](https://github.com/hermes-ai/hermes-agent) v0.6.0+ installed at `~/.hermes/`
+
+### Compatibility
+
+Scarf reads Hermes's SQLite database (schema v6) and parses CLI output from `hermes status`, `hermes doctor`, `hermes tools`, `hermes sessions`, `hermes gateway`, and `hermes pairing`. Tested and verified against:
+
+| Hermes Version | Status |
+|----------------|--------|
+| v0.6.0 (2026-03-30) | Verified |
+| v0.6.0 (2026-03-31, latest) | Verified |
+
+If a Hermes update changes the database schema or CLI output format, Scarf may need to be updated. Check the [Health](#features) view for compatibility warnings.
 
 ## Building
 
