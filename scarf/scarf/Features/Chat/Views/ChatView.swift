@@ -10,7 +10,7 @@ struct ChatView: View {
             Divider()
             terminalArea
         }
-        .navigationTitle("Chat")
+        .navigationTitle(L.chat)
         .task { await viewModel.loadRecentSessions() }
         .onChange(of: fileWatcher.lastChangeDate) {
             Task { await viewModel.loadRecentSessions() }
@@ -26,14 +26,14 @@ struct ChatView: View {
                 Circle()
                     .fill(.green)
                     .frame(width: 6, height: 6)
-                Text("Active")
+                Text(L.active)
                     .font(.caption)
                     .foregroundStyle(.secondary)
             } else {
                 Circle()
                     .fill(.secondary)
                     .frame(width: 6, height: 6)
-                Text("No active session")
+                Text(L.noActiveSession)
                     .font(.caption)
                     .foregroundStyle(.secondary)
             }
@@ -45,21 +45,21 @@ struct ChatView: View {
             }
 
             if !viewModel.hermesBinaryExists {
-                Label("Hermes binary not found", systemImage: "exclamationmark.triangle")
+                Label(L.hermesBinaryNotFound, systemImage: "exclamationmark.triangle")
                     .font(.caption)
                     .foregroundStyle(.red)
             }
 
             Menu {
-                Button("New Session") {
+                Button(L.newSession) {
                     viewModel.startNewSession()
                 }
-                Button("Continue Last Session") {
+                Button(L.continueLastSession) {
                     viewModel.continueLastSession()
                 }
                 if !viewModel.recentSessions.isEmpty {
                     Divider()
-                    Text("Resume Session")
+                    Text(L.resumeSession)
                     ForEach(viewModel.recentSessions) { session in
                         Button {
                             viewModel.resumeSession(session.id)
@@ -78,7 +78,7 @@ struct ChatView: View {
                     }
                 }
             } label: {
-                Label("Session", systemImage: "play.circle")
+                Label(L.session, systemImage: "play.circle")
                     .font(.caption)
             }
             .menuStyle(.borderlessButton)
@@ -96,13 +96,13 @@ struct ChatView: View {
                 HStack(spacing: 4) {
                     Image(systemName: viewModel.voiceEnabled ? "mic.fill" : "mic.slash")
                         .foregroundStyle(viewModel.voiceEnabled ? .green : .secondary)
-                    Text(viewModel.voiceEnabled ? "Voice On" : "Voice Off")
+                    Text(viewModel.voiceEnabled ? L.voiceOn : L.voiceOff)
                         .font(.caption)
                         .foregroundStyle(viewModel.voiceEnabled ? .primary : .secondary)
                 }
             }
             .buttonStyle(.plain)
-            .help("Toggle voice mode (/voice)")
+            .help(L.string("Toggle voice mode (/voice)"))
 
             if viewModel.voiceEnabled {
                 Button {
@@ -111,13 +111,13 @@ struct ChatView: View {
                     HStack(spacing: 4) {
                         Image(systemName: viewModel.ttsEnabled ? "speaker.wave.2.fill" : "speaker.slash")
                             .foregroundStyle(viewModel.ttsEnabled ? .green : .secondary)
-                        Text(viewModel.ttsEnabled ? "TTS On" : "TTS Off")
+                        Text(viewModel.ttsEnabled ? L.ttsOn : L.ttsOff)
                             .font(.caption)
                             .foregroundStyle(viewModel.ttsEnabled ? .primary : .secondary)
                     }
                 }
                 .buttonStyle(.plain)
-                .help("Toggle text-to-speech (/voice tts)")
+                .help(L.string("Toggle text-to-speech (/voice tts)"))
 
                 Button {
                     viewModel.pushToTalk()
@@ -126,12 +126,12 @@ struct ChatView: View {
                         Image(systemName: viewModel.isRecording ? "waveform.circle.fill" : "waveform.circle")
                             .foregroundStyle(viewModel.isRecording ? .red : Color.accentColor)
                             .symbolEffect(.pulse, isActive: viewModel.isRecording)
-                        Text(viewModel.isRecording ? "Recording..." : "Push to Talk")
+                        Text(viewModel.isRecording ? L.recording : L.pushToTalk)
                             .font(.caption)
                     }
                 }
                 .buttonStyle(.plain)
-                .help("Push to talk (Ctrl+B)")
+                .help(L.string("Push to talk (Ctrl+B)"))
                 .keyboardShortcut("b", modifiers: .control)
             }
         }
@@ -143,14 +143,14 @@ struct ChatView: View {
             PersistentTerminalView(terminalView: terminal)
         } else if viewModel.hermesBinaryExists {
             ContentUnavailableView(
-                "No Active Session",
+                L.string("No Active Session"),
                 systemImage: "terminal",
-                description: Text("Start a new session or resume an existing one from the Session menu above.")
+                description: Text(L.noActiveSessionHint)
             )
             .frame(maxWidth: .infinity, maxHeight: .infinity)
         } else {
             ContentUnavailableView(
-                "Hermes Not Found",
+                L.hermesNotFound,
                 systemImage: "terminal",
                 description: Text("Expected at \(HermesPaths.hermesBinary)")
             )

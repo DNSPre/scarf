@@ -8,6 +8,10 @@ enum InsightsPeriod: String, CaseIterable, Identifiable {
 
     var id: String { rawValue }
 
+    var localized: String {
+        L.string(rawValue)
+    }
+
     var sinceDate: Date {
         let calendar = Calendar.current
         switch self {

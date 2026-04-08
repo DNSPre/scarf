@@ -10,8 +10,8 @@ struct SkillsView: View {
             skillDetail
                 .frame(minWidth: 400)
         }
-        .navigationTitle("Skills (\(viewModel.totalSkillCount))")
-        .searchable(text: $viewModel.searchText, prompt: "Filter skills...")
+        .navigationTitle(L.string("Skills") + " (\(viewModel.totalSkillCount))")
+        .searchable(text: $viewModel.searchText, prompt: L.filterSkills)
         .onAppear { viewModel.load() }
     }
 
@@ -52,14 +52,14 @@ struct SkillsView: View {
                         .font(.title2.bold())
                     HStack {
                         Label(skill.category, systemImage: "folder")
-                        Label("\(skill.files.count) files", systemImage: "doc")
+                        Label("\(skill.files.count)\(L.string(" files"))", systemImage: "doc")
                     }
                     .font(.caption)
                     .foregroundStyle(.secondary)
                     Divider()
                     if !skill.files.isEmpty {
                         VStack(alignment: .leading, spacing: 4) {
-                            Text("Files")
+                            Text(L.files)
                                 .font(.caption.bold())
                                 .foregroundStyle(.secondary)
                             ForEach(skill.files, id: \.self) { file in
@@ -89,7 +89,7 @@ struct SkillsView: View {
                 .frame(maxWidth: .infinity, alignment: .topLeading)
             }
         } else {
-            ContentUnavailableView("Select a Skill", systemImage: "lightbulb", description: Text("Choose a skill from the list"))
+            ContentUnavailableView(L.selectSkill, systemImage: "lightbulb", description: Text(L.chooseSkillFromList))
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
         }
     }

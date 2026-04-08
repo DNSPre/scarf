@@ -13,7 +13,7 @@ struct ToolsView: View {
                 mcpSection
             }
         }
-        .navigationTitle("Tools")
+        .navigationTitle(L.tools)
         .onAppear { viewModel.load() }
     }
 
@@ -36,7 +36,7 @@ struct ToolsView: View {
                 .buttonStyle(.plain)
             }
             Spacer()
-            Text("\(viewModel.toolsets.filter(\.enabled).count) of \(viewModel.toolsets.count) enabled")
+            Text("\(viewModel.toolsets.filter(\.enabled).count) \(L.string("of")) \(viewModel.toolsets.count) \(L.string("enabled"))")
                 .font(.caption)
                 .foregroundStyle(.secondary)
         }
@@ -60,11 +60,11 @@ struct ToolsView: View {
 
     private var mcpSection: some View {
         VStack(alignment: .leading, spacing: 6) {
-            Text("MCP Servers")
+            Text(L.mcpServers)
                 .font(.caption.bold())
                 .foregroundStyle(.secondary)
             if viewModel.mcpStatus.contains("No MCP servers") {
-                Label("No MCP servers configured", systemImage: "server.rack")
+                Label(L.noMcpServersConfigured, systemImage: "server.rack")
                     .font(.caption)
                     .foregroundStyle(.secondary)
             } else {

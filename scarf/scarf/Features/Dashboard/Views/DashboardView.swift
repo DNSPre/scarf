@@ -15,7 +15,7 @@ struct DashboardView: View {
             .padding()
             .frame(maxWidth: .infinity, alignment: .topLeading)
         }
-        .navigationTitle("Dashboard")
+        .navigationTitle(L.dashboard)
         .task { await viewModel.load() }
         .onChange(of: fileWatcher.lastChangeDate) {
             Task { await viewModel.load() }
@@ -25,26 +25,26 @@ struct DashboardView: View {
     private var statusSection: some View {
         HStack(spacing: 16) {
             StatusCard(
-                title: "Hermes",
-                value: viewModel.hermesRunning ? "Running" : "Stopped",
+                title: L.hermes,
+                value: viewModel.hermesRunning ? L.running : L.stopped,
                 icon: "circle.fill",
                 color: viewModel.hermesRunning ? .green : .secondary
             )
             StatusCard(
-                title: "Model",
+                title: L.model,
                 value: viewModel.config.model,
                 icon: "cpu",
                 color: .blue
             )
             StatusCard(
-                title: "Provider",
+                title: L.provider,
                 value: viewModel.config.provider,
                 icon: "cloud",
                 color: .purple
             )
             StatusCard(
-                title: "Gateway",
-                value: viewModel.gatewayState?.statusText ?? "unknown",
+                title: L.gateway,
+                value: viewModel.gatewayState?.statusText ?? L.unknown,
                 icon: "network",
                 color: viewModel.gatewayState?.isRunning == true ? .green : .secondary
             )
@@ -53,16 +53,16 @@ struct DashboardView: View {
 
     private var statsSection: some View {
         VStack(alignment: .leading, spacing: 8) {
-            Text("Usage Stats")
+            Text(L.usageStats)
                 .font(.headline)
             HStack(spacing: 16) {
-                StatCard(label: "Sessions", value: "\(viewModel.stats.totalSessions)")
-                StatCard(label: "Messages", value: "\(viewModel.stats.totalMessages)")
-                StatCard(label: "Tool Calls", value: "\(viewModel.stats.totalToolCalls)")
-                StatCard(label: "Tokens", value: formatTokens(viewModel.stats.totalInputTokens + viewModel.stats.totalOutputTokens))
+                StatCard(label: L.sessions, value: "\(viewModel.stats.totalSessions)")
+                StatCard(label: L.messages, value: "\(viewModel.stats.totalMessages)")
+                StatCard(label: L.toolCalls, value: "\(viewModel.stats.totalToolCalls)")
+                StatCard(label: L.tokens, value: formatTokens(viewModel.stats.totalInputTokens + viewModel.stats.totalOutputTokens))
                 let cost = viewModel.stats.totalActualCostUSD > 0 ? viewModel.stats.totalActualCostUSD : viewModel.stats.totalCostUSD
                 if cost > 0 {
-                    StatCard(label: "Cost", value: String(format: "$%.2f", cost))
+                    StatCard(label: L.cost, value: String(format: "$%.2f", cost))
                 }
             }
         }
@@ -71,10 +71,10 @@ struct DashboardView: View {
     private var recentSessionsSection: some View {
         VStack(alignment: .leading, spacing: 8) {
             HStack {
-                Text("Recent Sessions")
+                Text(L.recentSessions)
                     .font(.headline)
                 Spacer()
-                Button("View All") {
+                Button(L.viewAll) {
                     coordinator.selectedSection = .sessions
                 }
                 .buttonStyle(.link)
@@ -88,7 +88,7 @@ struct DashboardView: View {
                     }
             }
             if viewModel.recentSessions.isEmpty && !viewModel.isLoading {
-                Text("No sessions found")
+                Text(L.noSessionsFound)
                     .foregroundStyle(.secondary)
             }
         }

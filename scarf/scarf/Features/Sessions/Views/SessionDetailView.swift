@@ -25,11 +25,11 @@ struct SessionDetailView: View {
                 Spacer()
                 if onRename != nil || onExport != nil || onDelete != nil {
                     Menu {
-                        if let onRename { Button("Rename...") { onRename() } }
-                        if let onExport { Button("Export...") { onExport() } }
+                        if let onRename { Button(L.rename) { onRename() } }
+                        if let onExport { Button(L.export) { onExport() } }
                         if let onDelete {
                             Divider()
-                            Button("Delete...", role: .destructive) { onDelete() }
+                            Button(L.delete, role: .destructive) { onDelete() }
                         }
                     } label: {
                         Image(systemName: "ellipsis.circle")
@@ -41,14 +41,14 @@ struct SessionDetailView: View {
             }
             HStack(spacing: 16) {
                 Label(session.source, systemImage: session.sourceIcon)
-                Label(session.model ?? "unknown", systemImage: "cpu")
-                Label("\(session.messageCount) msgs", systemImage: "bubble.left")
-                Label("\(session.toolCallCount) tools", systemImage: "wrench")
+                Label(session.model ?? L.unknown, systemImage: "cpu")
+                Label("\(session.messageCount)\(L.string(" msgs"))", systemImage: "bubble.left")
+                Label("\(session.toolCallCount)\(L.string(" tools"))", systemImage: "wrench")
                 if session.reasoningTokens > 0 {
-                    Label("\(session.reasoningTokens) reasoning", systemImage: "brain")
+                    Label("\(session.reasoningTokens)\(L.string(" reasoning"))", systemImage: "brain")
                 }
                 if let cost = session.displayCostUSD {
-                    Label(String(format: "$%.4f%@", cost, session.costIsActual ? "" : " est."), systemImage: "dollarsign.circle")
+                    Label(String(format: "$%.4f%@", cost, session.costIsActual ? "" : L.string("est.")), systemImage: "dollarsign.circle")
                 }
                 if let date = session.startedAt {
                     Label(date.formatted(.dateTime.month().day().hour().minute()), systemImage: "calendar")
@@ -85,7 +85,7 @@ struct MessageBubble: View {
                 if message.isUser { Spacer(minLength: 60) }
                 VStack(alignment: .leading, spacing: 6) {
                     if message.hasReasoning {
-                        DisclosureGroup("Reasoning") {
+                        DisclosureGroup(L.reasoning) {
                             Text(message.reasoning ?? "")
                                 .font(.caption.monospaced())
                                 .foregroundStyle(.secondary)

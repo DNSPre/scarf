@@ -10,8 +10,8 @@ struct HealthView: View {
             headerBar
             Divider()
             Picker("", selection: $selectedTab) {
-                Text("Status").tag(0)
-                Text("Diagnostics").tag(1)
+                Text(L.status).tag(0)
+                Text(L.diagnostics).tag(1)
             }
             .pickerStyle(.segmented)
             .frame(maxWidth: 300)
@@ -22,7 +22,7 @@ struct HealthView: View {
                     .padding()
             }
         }
-        .navigationTitle("Health")
+        .navigationTitle(L.health)
         .onAppear { viewModel.load() }
     }
 
@@ -54,7 +54,7 @@ struct HealthView: View {
                 MiniCount(count: viewModel.issueCount, color: .red, icon: "xmark.circle.fill")
             }
 
-            Button("Refresh") { viewModel.load() }
+            Button(L.refresh) { viewModel.load() }
                 .controlSize(.small)
         }
         .padding(.horizontal)

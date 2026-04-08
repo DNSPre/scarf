@@ -18,6 +18,10 @@ enum SidebarSection: String, CaseIterable, Identifiable {
 
     var id: String { rawValue }
 
+    var localized: String {
+        L.string(rawValue)
+    }
+
     var icon: String {
         switch self {
         case .dashboard: return "gauge.with.dots.needle.33percent"

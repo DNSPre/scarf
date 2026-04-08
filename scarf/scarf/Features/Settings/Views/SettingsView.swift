@@ -19,7 +19,7 @@ struct SettingsView: View {
             .padding()
             .frame(maxWidth: .infinity, alignment: .topLeading)
         }
-        .navigationTitle("Settings")
+        .navigationTitle(L.settings)
         .onAppear { viewModel.load() }
     }
 
@@ -31,9 +31,9 @@ struct SettingsView: View {
                     .foregroundStyle(.green)
             }
             Spacer()
-            Button("Open in Editor") { viewModel.openConfigInEditor() }
+            Button(L.openInEditor) { viewModel.openConfigInEditor() }
                 .controlSize(.small)
-            Button("Reload") { viewModel.load() }
+            Button(L.reload) { viewModel.load() }
                 .controlSize(.small)
         }
     }
@@ -41,70 +41,70 @@ struct SettingsView: View {
     // MARK: - Model & Provider
 
     private var modelSection: some View {
-        SettingsSection(title: "Model", icon: "cpu") {
-            EditableTextField(label: "Model", value: viewModel.config.model) { viewModel.setModel($0) }
-            PickerRow(label: "Provider", selection: viewModel.config.provider, options: viewModel.providers) { viewModel.setProvider($0) }
+        SettingsSection(title: L.model, icon: "cpu") {
+            EditableTextField(label: L.model, value: viewModel.config.model) { viewModel.setModel($0) }
+            PickerRow(label: L.provider, selection: viewModel.config.provider, options: viewModel.providers) { viewModel.setProvider($0) }
         }
     }
 
     // MARK: - Display
 
     private var displaySection: some View {
-        SettingsSection(title: "Display", icon: "paintbrush") {
+        SettingsSection(title: L.display, icon: "paintbrush") {
             if !viewModel.personalities.isEmpty {
-                PickerRow(label: "Personality", selection: viewModel.config.personality, options: viewModel.personalities) { viewModel.setPersonality($0) }
+                PickerRow(label: L.personality, selection: viewModel.config.personality, options: viewModel.personalities) { viewModel.setPersonality($0) }
             } else {
-                EditableTextField(label: "Personality", value: viewModel.config.personality) { viewModel.setPersonality($0) }
+                EditableTextField(label: L.personality, value: viewModel.config.personality) { viewModel.setPersonality($0) }
             }
-            ToggleRow(label: "Streaming", isOn: viewModel.config.streaming) { viewModel.setStreaming($0) }
-            ToggleRow(label: "Show Reasoning", isOn: viewModel.config.showReasoning) { viewModel.setShowReasoning($0) }
-            ToggleRow(label: "Show Cost", isOn: viewModel.config.showCost) { viewModel.setShowCost($0) }
-            ToggleRow(label: "Verbose", isOn: viewModel.config.verbose) { viewModel.setVerbose($0) }
+            ToggleRow(label: L.streaming, isOn: viewModel.config.streaming) { viewModel.setStreaming($0) }
+            ToggleRow(label: L.showReasoning, isOn: viewModel.config.showReasoning) { viewModel.setShowReasoning($0) }
+            ToggleRow(label: L.showCost, isOn: viewModel.config.showCost) { viewModel.setShowCost($0) }
+            ToggleRow(label: L.verbose, isOn: viewModel.config.verbose) { viewModel.setVerbose($0) }
         }
     }
 
     // MARK: - Terminal
 
     private var terminalSection: some View {
-        SettingsSection(title: "Terminal", icon: "terminal") {
-            PickerRow(label: "Backend", selection: viewModel.config.terminalBackend, options: viewModel.terminalBackends) { viewModel.setTerminalBackend($0) }
-            StepperRow(label: "Max Turns", value: viewModel.config.maxTurns, range: 1...200) { viewModel.setMaxTurns($0) }
-            PickerRow(label: "Reasoning Effort", selection: viewModel.config.reasoningEffort, options: ["low", "medium", "high"]) { viewModel.setReasoningEffort($0) }
-            PickerRow(label: "Approval Mode", selection: viewModel.config.approvalMode, options: ["auto", "manual", "smart"]) { viewModel.setApprovalMode($0) }
+        SettingsSection(title: L.terminal, icon: "terminal") {
+            PickerRow(label: L.backend, selection: viewModel.config.terminalBackend, options: viewModel.terminalBackends) { viewModel.setTerminalBackend($0) }
+            StepperRow(label: L.maxTurns, value: viewModel.config.maxTurns, range: 1...200) { viewModel.setMaxTurns($0) }
+            PickerRow(label: L.reasoningEffort, selection: viewModel.config.reasoningEffort, options: [L.string("low"), L.string("medium"), L.string("high")]) { viewModel.setReasoningEffort($0) }
+            PickerRow(label: L.approvalMode, selection: viewModel.config.approvalMode, options: [L.string("auto"), L.string("manual"), L.string("smart")]) { viewModel.setApprovalMode($0) }
         }
     }
 
     // MARK: - Voice
 
     private var voiceSection: some View {
-        SettingsSection(title: "Voice", icon: "mic") {
-            ToggleRow(label: "Auto TTS", isOn: viewModel.config.autoTTS) { viewModel.setAutoTTS($0) }
-            StepperRow(label: "Silence Threshold", value: viewModel.config.silenceThreshold, range: 50...500) { viewModel.setSilenceThreshold($0) }
+        SettingsSection(title: L.voice, icon: "mic") {
+            ToggleRow(label: L.autoTTS, isOn: viewModel.config.autoTTS) { viewModel.setAutoTTS($0) }
+            StepperRow(label: L.silenceThreshold, value: viewModel.config.silenceThreshold, range: 50...500) { viewModel.setSilenceThreshold($0) }
         }
     }
 
     // MARK: - Memory
 
     private var memorySection: some View {
-        SettingsSection(title: "Memory", icon: "brain") {
-            ToggleRow(label: "Memory Enabled", isOn: viewModel.config.memoryEnabled) { viewModel.setMemoryEnabled($0) }
-            StepperRow(label: "Memory Char Limit", value: viewModel.config.memoryCharLimit, range: 500...10000) { viewModel.setMemoryCharLimit($0) }
-            StepperRow(label: "User Char Limit", value: viewModel.config.userCharLimit, range: 500...10000) { viewModel.setUserCharLimit($0) }
-            StepperRow(label: "Nudge Interval", value: viewModel.config.nudgeInterval, range: 1...50) { viewModel.setNudgeInterval($0) }
+        SettingsSection(title: L.memory, icon: "brain") {
+            ToggleRow(label: L.memoryEnabled, isOn: viewModel.config.memoryEnabled) { viewModel.setMemoryEnabled($0) }
+            StepperRow(label: L.memoryCharLimit, value: viewModel.config.memoryCharLimit, range: 500...10000) { viewModel.setMemoryCharLimit($0) }
+            StepperRow(label: L.userCharLimit, value: viewModel.config.userCharLimit, range: 500...10000) { viewModel.setUserCharLimit($0) }
+            StepperRow(label: L.nudgeInterval, value: viewModel.config.nudgeInterval, range: 1...50) { viewModel.setNudgeInterval($0) }
         }
     }
 
     // MARK: - Paths
 
     private var pathsSection: some View {
-        SettingsSection(title: "Paths", icon: "folder") {
-            PathRow(label: "Hermes Home", path: HermesPaths.home)
-            PathRow(label: "State DB", path: HermesPaths.stateDB)
-            PathRow(label: "Config", path: HermesPaths.configYAML)
-            PathRow(label: "Memory", path: HermesPaths.memoriesDir)
-            PathRow(label: "Sessions", path: HermesPaths.sessionsDir)
-            PathRow(label: "Skills", path: HermesPaths.skillsDir)
-            PathRow(label: "Logs", path: HermesPaths.errorsLog)
+        SettingsSection(title: L.paths, icon: "folder") {
+            PathRow(label: L.hermesHome, path: HermesPaths.home)
+            PathRow(label: L.stateDB, path: HermesPaths.stateDB)
+            PathRow(label: L.config, path: HermesPaths.configYAML)
+            PathRow(label: L.memory, path: HermesPaths.memoriesDir)
+            PathRow(label: L.sessions, path: HermesPaths.sessionsDir)
+            PathRow(label: L.skills, path: HermesPaths.skillsDir)
+            PathRow(label: L.logs, path: HermesPaths.errorsLog)
         }
     }
 
@@ -113,9 +113,9 @@ struct SettingsView: View {
     private var rawConfigSection: some View {
         VStack(alignment: .leading, spacing: 8) {
             HStack {
-                Text("Raw Config")
+                Text(L.rawConfig)
                     .font(.headline)
-                Button(showRawConfig ? "Hide" : "Show") {
+                Button(showRawConfig ? L.hide : L.show) {
                     showRawConfig.toggle()
                 }
                 .controlSize(.small)
@@ -172,13 +172,13 @@ struct EditableTextField: View {
                 })
                 .textFieldStyle(.roundedBorder)
                 .font(.system(.caption, design: .monospaced))
-                Button("Cancel") { isEditing = false }
+                Button(L.cancel) { isEditing = false }
                     .controlSize(.mini)
             } else {
                 Text(value)
                     .font(.system(.caption, design: .monospaced))
                 Spacer()
-                Button("Edit") {
+                Button(L.edit) {
                     text = value
                     isEditing = true
                 }

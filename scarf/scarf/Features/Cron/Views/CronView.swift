@@ -10,7 +10,7 @@ struct CronView: View {
             jobDetail
                 .frame(minWidth: 400)
         }
-        .navigationTitle("Cron Jobs")
+        .navigationTitle(L.cronJobs)
         .onAppear { viewModel.load() }
     }
 
@@ -39,7 +39,7 @@ struct CronView: View {
                     }
                     Spacer()
                     if !job.enabled {
-                        Text("Disabled")
+                        Text(L.disabled)
                             .font(.caption2)
                             .foregroundStyle(.secondary)
                     }
@@ -50,7 +50,7 @@ struct CronView: View {
         .listStyle(.inset)
         .overlay {
             if viewModel.jobs.isEmpty {
-                ContentUnavailableView("No Cron Jobs", systemImage: "clock.arrow.2.circlepath", description: Text("No scheduled jobs configured"))
+                ContentUnavailableView(L.noCronJobs, systemImage: "clock.arrow.2.circlepath", description: Text(L.noScheduledJobsConfigured))
             }
         }
     }
@@ -66,9 +66,9 @@ struct CronView: View {
                         HStack(spacing: 16) {
                             Label(job.state, systemImage: job.stateIcon)
                             Label(job.schedule.display ?? job.schedule.kind, systemImage: "clock")
-                            Label(job.enabled ? "Enabled" : "Disabled", systemImage: job.enabled ? "checkmark.circle" : "xmark.circle")
+                            Label(job.enabled ? L.enabled : L.disabled, systemImage: job.enabled ? "checkmark.circle" : "xmark.circle")
                             if let deliver = job.deliver {
-                                Label("Deliver: \(deliver)", systemImage: "paperplane")
+                                Label("\(L.deliver) \(deliver)", systemImage: "paperplane")
                             }
                         }
                         .font(.caption)
@@ -76,7 +76,7 @@ struct CronView: View {
                     }
                     Divider()
                     VStack(alignment: .leading, spacing: 4) {
-                        Text("Prompt")
+                        Text(L.prompt)
                             .font(.caption.bold())
                             .foregroundStyle(.secondary)
                         Text(job.prompt)
@@ -88,7 +88,7 @@ struct CronView: View {
                     }
                     if let skills = job.skills, !skills.isEmpty {
                         VStack(alignment: .leading, spacing: 4) {
-                            Text("Skills")
+                            Text(L.skills)
                                 .font(.caption.bold())
                                 .foregroundStyle(.secondary)
                             HStack {
@@ -104,12 +104,12 @@ struct CronView: View {
                         }
                     }
                     if let nextRun = job.nextRunAt {
-                        Label("Next run: \(nextRun)", systemImage: "arrow.forward.circle")
+                        Label("\(L.nextRun) \(nextRun)", systemImage: "arrow.forward.circle")
                             .font(.caption)
                             .foregroundStyle(.secondary)
                     }
                     if let lastRun = job.lastRunAt {
-                        Label("Last run: \(lastRun)", systemImage: "arrow.backward.circle")
+                        Label("\(L.lastRun) \(lastRun)", systemImage: "arrow.backward.circle")
                             .font(.caption)
                             .foregroundStyle(.secondary)
                     }
@@ -121,7 +121,7 @@ struct CronView: View {
                     if let output = viewModel.jobOutput {
                         Divider()
                         VStack(alignment: .leading, spacing: 4) {
-                            Text("Last Output")
+                            Text(L.lastOutput)
                                 .font(.caption.bold())
                                 .foregroundStyle(.secondary)
                             Text(output)
@@ -138,7 +138,7 @@ struct CronView: View {
                 .frame(maxWidth: .infinity, alignment: .topLeading)
             }
         } else {
-            ContentUnavailableView("Select a Job", systemImage: "clock.arrow.2.circlepath", description: Text("Choose a cron job from the list"))
+            ContentUnavailableView(L.selectJob, systemImage: "clock.arrow.2.circlepath", description: Text(L.chooseCronJobFromList))
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
         }
     }

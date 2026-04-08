@@ -18,7 +18,7 @@ struct InsightsView: View {
             .padding()
             .frame(maxWidth: .infinity, alignment: .topLeading)
         }
-        .navigationTitle("Insights")
+        .navigationTitle(L.insights)
         .task { await viewModel.load() }
         .onChange(of: viewModel.period) {
             Task { await viewModel.load() }
@@ -26,9 +26,9 @@ struct InsightsView: View {
     }
 
     private var periodPicker: some View {
-        Picker("Period", selection: $viewModel.period) {
+        Picker(L.period, selection: $viewModel.period) {
             ForEach(InsightsPeriod.allCases) { period in
-                Text(period.rawValue).tag(period)
+                Text(period.localized).tag(period)
             }
         }
         .pickerStyle(.segmented)
@@ -39,23 +39,23 @@ struct InsightsView: View {
 
     private var overviewSection: some View {
         VStack(alignment: .leading, spacing: 8) {
-            Text("Overview")
+            Text(L.overview)
                 .font(.headline)
             LazyVGrid(columns: Array(repeating: GridItem(.flexible()), count: 4), spacing: 12) {
-                InsightCard(label: "Sessions", value: "\(viewModel.sessions.count)")
-                InsightCard(label: "Messages", value: "\(viewModel.totalMessages)")
-                InsightCard(label: "User Messages", value: "\(viewModel.userMessageCount)")
-                InsightCard(label: "Tool Calls", value: "\(viewModel.totalToolCalls)")
-                InsightCard(label: "Input Tokens", value: formatTokens(viewModel.totalInputTokens))
-                InsightCard(label: "Output Tokens", value: formatTokens(viewModel.totalOutputTokens))
-                InsightCard(label: "Cache Read", value: formatTokens(viewModel.totalCacheReadTokens))
-                InsightCard(label: "Cache Write", value: formatTokens(viewModel.totalCacheWriteTokens))
-                InsightCard(label: "Reasoning Tokens", value: formatTokens(viewModel.totalReasoningTokens))
-                InsightCard(label: "Total Tokens", value: formatTokens(viewModel.totalTokens))
-                InsightCard(label: "Total Cost", value: String(format: "$%.2f", viewModel.totalCost))
-                InsightCard(label: "Active Time", value: formatDuration(viewModel.activeTime))
-                InsightCard(label: "Avg Session", value: formatDuration(viewModel.avgSessionDuration))
-                InsightCard(label: "Avg Msgs/Session", value: viewModel.sessions.isEmpty ? "0" : String(format: "%.1f", Double(viewModel.totalMessages) / Double(viewModel.sessions.count)))
+                InsightCard(label: L.sessions, value: "\(viewModel.sessions.count)")
+                InsightCard(label: L.messages, value: "\(viewModel.totalMessages)")
+                InsightCard(label: L.userMessages, value: "\(viewModel.userMessageCount)")
+                InsightCard(label: L.toolCalls, value: "\(viewModel.totalToolCalls)")
+                InsightCard(label: L.inputTokens, value: formatTokens(viewModel.totalInputTokens))
+                InsightCard(label: L.outputTokens, value: formatTokens(viewModel.totalOutputTokens))
+                InsightCard(label: L.cacheRead, value: formatTokens(viewModel.totalCacheReadTokens))
+                InsightCard(label: L.cacheWrite, value: formatTokens(viewModel.totalCacheWriteTokens))
+                InsightCard(label: L.reasoningTokens, value: formatTokens(viewModel.totalReasoningTokens))
+                InsightCard(label: L.totalTokens, value: formatTokens(viewModel.totalTokens))
+                InsightCard(label: L.totalCost, value: String(format: "$%.2f", viewModel.totalCost))
+                InsightCard(label: L.activeTime, value: formatDuration(viewModel.activeTime))
+                InsightCard(label: L.avgSession, value: formatDuration(viewModel.avgSessionDuration))
+                InsightCard(label: L.avgMsgsPerSession, value: viewModel.sessions.isEmpty ? "0" : String(format: "%.1f", Double(viewModel.totalMessages) / Double(viewModel.sessions.count)))
             }
         }
     }
@@ -64,10 +64,10 @@ struct InsightsView: View {
 
     private var modelSection: some View {
         VStack(alignment: .leading, spacing: 8) {
-            Text("Models")
+            Text(L.models)
                 .font(.headline)
             if viewModel.modelUsage.isEmpty {
-                Text("No data")
+                Text(L.noData)
                     .foregroundStyle(.secondary)
             } else {
                 ForEach(viewModel.modelUsage) { model in
@@ -79,9 +79,9 @@ struct InsightsView: View {
                             .font(.system(.body, design: .monospaced))
                         Spacer()
                         VStack(alignment: .trailing, spacing: 2) {
-                            Text("\(model.sessions) sessions")
+                            Text("\(model.sessions)\(L.string(" sessions"))")
                                 .font(.caption)
-                            Text(formatTokens(model.totalTokens) + " tokens")
+                            Text(formatTokens(model.totalTokens) + L.string(" tokens"))
                                 .font(.caption)
                                 .foregroundStyle(.secondary)
                         }
@@ -98,10 +98,10 @@ struct InsightsView: View {
 
     private var platformSection: some View {
         VStack(alignment: .leading, spacing: 8) {
-            Text("Platforms")
+            Text(L.platforms)
                 .font(.headline)
             if viewModel.platformUsage.isEmpty {
-                Text("No data")
+                Text(L.noData)
                     .foregroundStyle(.secondary)
             } else {
                 HStack(spacing: 12) {
@@ -112,10 +112,10 @@ struct InsightsView: View {
                                 .foregroundStyle(Color.accentColor)
                             Text(platform.platform)
                                 .font(.caption.bold())
-                            Text("\(platform.sessions) sessions")
+                            Text("\(platform.sessions)\(L.string(" sessions"))")
                                 .font(.caption)
                                 .foregroundStyle(.secondary)
-                            Text("\(platform.messages) msgs")
+                            Text("\(platform.messages)\(L.string(" msgs"))")
                                 .font(.caption)
                                 .foregroundStyle(.secondary)
                         }
@@ -133,10 +133,10 @@ struct InsightsView: View {
 
     private var toolsSection: some View {
         VStack(alignment: .leading, spacing: 8) {
-            Text("Top Tools")
+            Text(L.topTools)
                 .font(.headline)
             if viewModel.toolUsage.isEmpty {
-                Text("No data")
+                Text(L.noData)
                     .foregroundStyle(.secondary)
             } else {
                 let maxCount = viewModel.toolUsage.first?.count ?? 1
@@ -170,7 +170,7 @@ struct InsightsView: View {
 
     private var activitySection: some View {
         VStack(alignment: .leading, spacing: 12) {
-            Text("Activity Patterns")
+            Text(L.activityPatterns)
                 .font(.headline)
             HStack(alignment: .top, spacing: 24) {
                 dayOfWeekChart
@@ -181,10 +181,10 @@ struct InsightsView: View {
 
     private var dayOfWeekChart: some View {
         VStack(alignment: .leading, spacing: 4) {
-            Text("By Day")
+            Text(L.byDay)
                 .font(.caption.bold())
                 .foregroundStyle(.secondary)
-            let dayNames = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]
+            let dayNames = [L.string("Mon"), L.string("Tue"), L.string("Wed"), L.string("Thu"), L.string("Fri"), L.string("Sat"), L.string("Sun")]
             let maxVal = max(1, viewModel.dailyActivity.values.max() ?? 1)
             ForEach(0..<7, id: \.self) { day in
                 let count = viewModel.dailyActivity[day] ?? 0
@@ -207,7 +207,7 @@ struct InsightsView: View {
 
     private var hourlyChart: some View {
         VStack(alignment: .leading, spacing: 4) {
-            Text("By Hour")
+            Text(L.byHour)
                 .font(.caption.bold())
                 .foregroundStyle(.secondary)
             let maxVal = max(1, viewModel.hourlyActivity.values.max() ?? 1)
@@ -236,10 +236,10 @@ struct InsightsView: View {
 
     private var notableSection: some View {
         VStack(alignment: .leading, spacing: 8) {
-            Text("Notable Sessions")
+            Text(L.notableSessions)
                 .font(.headline)
             if viewModel.notableSessions.isEmpty {
-                Text("No data")
+                Text(L.noData)
                     .foregroundStyle(.secondary)
             } else {
                 ForEach(viewModel.notableSessions) { notable in
@@ -262,7 +262,7 @@ struct InsightsView: View {
                                 .foregroundStyle(Color.accentColor)
                         }
                         .buttonStyle(.plain)
-                        .help("Open session")
+                        .help(L.openSession)
                     }
                     .padding(10)
                     .background(.quaternary.opacity(0.5))

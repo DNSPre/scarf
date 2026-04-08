@@ -17,8 +17,8 @@ struct SessionsView: View {
                     .frame(minWidth: 400)
             }
         }
-        .navigationTitle("Sessions")
-        .searchable(text: $viewModel.searchText, prompt: "Search messages...")
+        .navigationTitle(L.sessions)
+        .searchable(text: $viewModel.searchText, prompt: L.searchMessages)
         .onSubmit(of: .search) { Task { await viewModel.search() } }
         .onChange(of: viewModel.searchText) {
             if viewModel.searchText.isEmpty {
@@ -37,24 +37,24 @@ struct SessionsView: View {
         .sheet(isPresented: $viewModel.showRenameSheet) {
             renameSheet
         }
-        .confirmationDialog("Delete Session?", isPresented: $viewModel.showDeleteConfirmation) {
-            Button("Delete", role: .destructive) { viewModel.confirmDelete() }
-            Button("Cancel", role: .cancel) {}
+        .confirmationDialog(L.deleteSessionQuestion, isPresented: $viewModel.showDeleteConfirmation) {
+            Button(L.delete, role: .destructive) { viewModel.confirmDelete() }
+            Button(L.cancel, role: .cancel) {}
         } message: {
-            Text("This will permanently delete the session and all its messages.")
+            Text(L.deleteSessionMessage)
         }
     }
 
     private func statsBar(_ stats: SessionStoreStats) -> some View {
         HStack(spacing: 16) {
-            Label("\(stats.totalSessions) sessions", systemImage: "bubble.left.and.bubble.right")
-            Label("\(stats.totalMessages) messages", systemImage: "text.bubble")
+            Label("\(stats.totalSessions)\(L.string(" sessions"))", systemImage: "bubble.left.and.bubble.right")
+            Label("\(stats.totalMessages)\(L.string(" messages"))", systemImage: "text.bubble")
             Label(stats.databaseSize, systemImage: "internaldrive")
             ForEach(stats.platformCounts, id: \.platform) { item in
                 Label("\(item.count) \(item.platform)", systemImage: platformIcon(item.platform))
             }
             Spacer()
-            Button("Export All") { viewModel.exportAll() }
+            Button(L.exportAll) { viewModel.exportAll() }
                 .controlSize(.small)
         }
         .font(.caption)
@@ -76,7 +76,7 @@ struct SessionsView: View {
             }
         )) {
             if viewModel.isSearching {
-                Section("Search Results (\(viewModel.searchResults.count))") {
+                Section(L.searchResults + "\(viewModel.searchResults.count))") {
                     ForEach(viewModel.searchResults) { message in
                         VStack(alignment: .leading, spacing: 2) {
                             Text(message.content.prefix(100))
@@ -98,10 +98,10 @@ struct SessionsView: View {
                     SessionRow(session: session, preview: viewModel.previewFor(session))
                         .tag(session.id)
                         .contextMenu {
-                            Button("Rename...") { viewModel.beginRename(session) }
-                            Button("Export...") { viewModel.exportSession(session) }
+                            Button(L.rename) { viewModel.beginRename(session) }
+                            Button(L.export) { viewModel.exportSession(session) }
                             Divider()
-                            Button("Delete...", role: .destructive) { viewModel.beginDelete(session) }
+                            Button(L.delete, role: .destructive) { viewModel.beginDelete(session) }
                         }
                 }
             }
@@ -122,23 +122,23 @@ struct SessionsView: View {
             )
             .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
         } else {
-            ContentUnavailableView("Select a Session", systemImage: "bubble.left.and.bubble.right", description: Text("Choose a session from the list"))
+            ContentUnavailableView(L.selectSession, systemImage: "bubble.left.and.bubble.right", description: Text(L.chooseSessionFromList))
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
         }
     }
 
     private var renameSheet: some View {
         VStack(spacing: 16) {
-            Text("Rename Session")
+            Text(L.renameSession)
                 .font(.headline)
-            TextField("Session title", text: $viewModel.renameText)
+            TextField(L.sessionTitle, text: $viewModel.renameText)
                 .textFieldStyle(.roundedBorder)
                 .onSubmit { viewModel.confirmRename() }
             HStack {
-                Button("Cancel") { viewModel.showRenameSheet = false }
+                Button(L.cancel) { viewModel.showRenameSheet = false }
                     .keyboardShortcut(.cancelAction)
                 Spacer()
-                Button("Rename") { viewModel.confirmRename() }
+                Button(L.rename) { viewModel.confirmRename() }
                     .buttonStyle(.borderedProminent)
                     .keyboardShortcut(.defaultAction)
                     .disabled(viewModel.renameText.trimmingCharacters(in: .whitespaces).isEmpty)

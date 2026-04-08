@@ -3,6 +3,10 @@ import SwiftUI
 private enum DashboardTab: String, CaseIterable {
     case dashboard = "Dashboard"
     case site = "Site"
+
+    var localized: String {
+        L.string(rawValue)
+    }
 }
 
 struct ProjectsView: View {
@@ -19,7 +23,7 @@ struct ProjectsView: View {
             dashboardArea
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
         }
-        .navigationTitle("Projects")
+        .navigationTitle(L.string("Projects"))
         .task {
             viewModel.load()
             if let name = coordinator.selectedProjectName,
@@ -115,23 +119,23 @@ struct ProjectsView: View {
             }
         } else if let error = viewModel.dashboardError {
             ContentUnavailableView {
-                Label("No Dashboard", systemImage: "square.grid.2x2")
+                Label(L.noDashboard, systemImage: "square.grid.2x2")
             } description: {
                 Text(error)
             }
         } else if viewModel.projects.isEmpty {
             ContentUnavailableView {
-                Label("No Projects", systemImage: "square.grid.2x2")
+                Label(L.noProjects, systemImage: "square.grid.2x2")
             } description: {
-                Text("Add a project folder to get started. Create a .scarf/dashboard.json file in your project to define widgets.")
+                Text(L.string("Add a project folder to get started. Create a .scarf/dashboard.json file in your project to define widgets."))
             } actions: {
-                Button("Add Project") { showingAddSheet = true }
+                Button(L.addProject) { showingAddSheet = true }
             }
         } else {
             ContentUnavailableView {
-                Label("Select a Project", systemImage: "square.grid.2x2")
+                Label(L.selectProject, systemImage: "square.grid.2x2")
             } description: {
-                Text("Choose a project from the sidebar to view its dashboard.")
+                Text(L.string("Choose a project from the sidebar to view its dashboard."))
             }
         }
     }
@@ -145,7 +149,7 @@ struct ProjectsView: View {
                     HStack(spacing: 4) {
                         Image(systemName: tab == .dashboard ? "square.grid.2x2" : "globe")
                             .font(.caption)
-                        Text(tab.rawValue)
+                        Text(tab.localized)
                             .font(.subheadline)
                     }
                     .padding(.horizontal, 12)
@@ -191,7 +195,7 @@ struct ProjectsView: View {
             }
             Spacer()
             if let updated = dashboard.updatedAt {
-                Text("Updated: \(updated)")
+                Text("\(L.updated) \(updated)")
                     .font(.caption)
                     .foregroundStyle(.secondary)
             }
@@ -268,7 +272,7 @@ struct WidgetView: View {
                     Image(systemName: "questionmark.square.dashed")
                         .font(.title2)
                         .foregroundStyle(.secondary)
-                    Text("Unknown: \(widget.type)")
+                    Text("\(L.unknown) \(widget.type)")
                         .font(.caption)
                         .foregroundStyle(.secondary)
                 }
@@ -291,14 +295,14 @@ struct AddProjectSheet: View {
 
     var body: some View {
         VStack(spacing: 16) {
-            Text("Add Project")
+            Text(L.addProject)
                 .font(.headline)
-            TextField("Project Name", text: $projectName)
+            TextField(L.projectName, text: $projectName)
                 .textFieldStyle(.roundedBorder)
             HStack {
-                TextField("Project Path", text: $projectPath)
+                TextField(L.projectPath, text: $projectPath)
                     .textFieldStyle(.roundedBorder)
-                Button("Browse...") {
+                Button(L.browse) {
                     let panel = NSOpenPanel()
                     panel.canChooseDirectories = true
                     panel.canChooseFiles = false
@@ -312,10 +316,10 @@ struct AddProjectSheet: View {
                 }
             }
             HStack {
-                Button("Cancel") { dismiss() }
+                Button(L.cancel) { dismiss() }
                     .keyboardShortcut(.cancelAction)
                 Spacer()
-                Button("Add") {
+                Button(L.add) {
                     guard !projectName.isEmpty, !projectPath.isEmpty else { return }
                     onAdd(projectName, projectPath)
                     dismiss()

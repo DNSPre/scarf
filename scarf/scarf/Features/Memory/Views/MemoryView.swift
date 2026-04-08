@@ -10,7 +10,7 @@ struct MemoryView: View {
                 if viewModel.hasExternalProvider {
                     HStack(spacing: 8) {
                         Image(systemName: "info.circle")
-                        Text("Memory is managed by \(viewModel.memoryProvider). File contents shown here may be stale.")
+                        Text(L.string("Memory is managed by \(viewModel.memoryProvider). File contents shown here may be stale."))
                     }
                     .font(.caption)
                     .foregroundStyle(.orange)
@@ -25,7 +25,7 @@ struct MemoryView: View {
             .padding()
             .frame(maxWidth: .infinity, alignment: .topLeading)
         }
-        .navigationTitle("Memory")
+        .navigationTitle(L.memory)
         .onAppear { viewModel.load() }
         .onChange(of: fileWatcher.lastChangeDate) {
             viewModel.load()
@@ -41,16 +41,16 @@ struct MemoryView: View {
                 Text(title)
                     .font(.headline)
                 Spacer()
-                Text("\(charCount) chars")
+                Text("\(charCount)\(L.string(" chars"))")
                     .font(.caption)
                     .foregroundStyle(.secondary)
-                Button("Edit") {
+                Button(L.edit) {
                     viewModel.startEditing(target)
                 }
                 .controlSize(.small)
             }
             if content.isEmpty {
-                Text("Empty")
+                Text(L.empty)
                     .foregroundStyle(.secondary)
                     .padding()
             } else {
@@ -67,11 +67,11 @@ struct MemoryView: View {
     private var editorSheet: some View {
         VStack(spacing: 0) {
             HStack {
-                Text(viewModel.editingFile == .memory ? "Edit Agent Memory" : "Edit User Profile")
+                Text(viewModel.editingFile == .memory ? L.editAgentMemory : L.editUserProfile)
                     .font(.headline)
                 Spacer()
-                Button("Cancel") { viewModel.cancelEditing() }
-                Button("Save") { viewModel.save() }
+                Button(L.cancel) { viewModel.cancelEditing() }
+                Button(L.save) { viewModel.save() }
                     .buttonStyle(.borderedProminent)
             }
             .padding()

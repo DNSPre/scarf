@@ -15,7 +15,7 @@ struct ActivityView: View {
                     .frame(minWidth: 300)
             }
         }
-        .navigationTitle("Activity")
+        .navigationTitle(L.activity)
         .task { await viewModel.load() }
         .onDisappear { Task { await viewModel.cleanup() } }
     }
@@ -24,7 +24,7 @@ struct ActivityView: View {
         HStack(spacing: 12) {
             ScrollView(.horizontal, showsIndicators: false) {
                 HStack(spacing: 8) {
-                    FilterChip(label: "All", isSelected: viewModel.filterKind == nil) {
+                    FilterChip(label: L.all, isSelected: viewModel.filterKind == nil) {
                         viewModel.filterKind = nil
                     }
                     ForEach(ToolKind.allCases, id: \.rawValue) { kind in
@@ -37,7 +37,7 @@ struct ActivityView: View {
             Divider()
                 .frame(height: 16)
             Picker(selection: $viewModel.filterSessionId) {
-                Text("All Sessions").tag(String?.none)
+                Text(L.allSessions).tag(String?.none)
                 Divider()
                 ForEach(viewModel.availableSessions, id: \.id) { session in
                     Text(session.label)
@@ -91,7 +91,7 @@ struct ActivityView: View {
         .listStyle(.inset)
         .overlay {
             if viewModel.filteredActivity.isEmpty && !viewModel.isLoading {
-                ContentUnavailableView("No Activity", systemImage: "bolt.horizontal", description: Text("No tool calls found"))
+                ContentUnavailableView(L.noActivity, systemImage: "bolt.horizontal", description: Text(L.string("No tool calls found")))
             }
         }
     }
@@ -126,7 +126,7 @@ struct ActivityView: View {
                         }
                         .buttonStyle(.plain)
                         .foregroundStyle(Color.accentColor)
-                        .help("Open session")
+                        .help(L.openSession)
                     }
                     .font(.caption)
                     .foregroundStyle(.secondary)
@@ -134,7 +134,7 @@ struct ActivityView: View {
                     Divider()
 
                     VStack(alignment: .leading, spacing: 4) {
-                        Text("Arguments")
+                        Text(L.arguments)
                             .font(.caption.bold())
                             .foregroundStyle(.secondary)
                         Text(entry.prettyArguments)
@@ -148,7 +148,7 @@ struct ActivityView: View {
 
                     if !entry.messageContent.isEmpty {
                         VStack(alignment: .leading, spacing: 4) {
-                            Text("Assistant Message")
+                            Text(L.assistantMessage)
                                 .font(.caption.bold())
                                 .foregroundStyle(.secondary)
                             Text(entry.messageContent)
@@ -165,7 +165,7 @@ struct ActivityView: View {
                 .frame(maxWidth: .infinity, alignment: .topLeading)
             }
         } else {
-            ContentUnavailableView("Select a Tool Call", systemImage: "bolt.horizontal", description: Text("Choose an entry from the list"))
+            ContentUnavailableView(L.selectToolCall, systemImage: "bolt.horizontal", description: Text(L.chooseEntryFromList))
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
         }
     }

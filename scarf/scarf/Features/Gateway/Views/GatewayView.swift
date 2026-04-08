@@ -14,7 +14,7 @@ struct GatewayView: View {
             .padding()
             .frame(maxWidth: .infinity, alignment: .topLeading)
         }
-        .navigationTitle("Gateway")
+        .navigationTitle(L.gateway)
         .onAppear { viewModel.load() }
         .onChange(of: fileWatcher.lastChangeDate) { viewModel.load() }
     }
@@ -24,7 +24,7 @@ struct GatewayView: View {
     private var serviceSection: some View {
         VStack(alignment: .leading, spacing: 12) {
             HStack {
-                Text("Service")
+                Text(L.service)
                     .font(.headline)
                 Spacer()
                 if let msg = viewModel.actionMessage {
@@ -33,9 +33,9 @@ struct GatewayView: View {
                         .foregroundStyle(.secondary)
                 }
                 HStack(spacing: 8) {
-                    Button("Start") { viewModel.startGateway() }
-                    Button("Stop") { viewModel.stopGateway() }
-                    Button("Restart") { viewModel.restartGateway() }
+                    Button(L.start) { viewModel.startGateway() }
+                    Button(L.stop) { viewModel.stopGateway() }
+                    Button(L.restart) { viewModel.restartGateway() }
                 }
                 .controlSize(.small)
             }
@@ -51,12 +51,12 @@ struct GatewayView: View {
                         .foregroundStyle(.secondary)
                 }
                 if viewModel.gateway.isLoaded {
-                    Label("Loaded", systemImage: "checkmark.circle")
+                    Label(L.loaded, systemImage: "checkmark.circle")
                         .font(.caption)
                         .foregroundStyle(.green)
                 }
                 if viewModel.gateway.isStale {
-                    Label("Service definition stale", systemImage: "exclamationmark.triangle")
+                    Label(L.serviceDefinitionStale, systemImage: "exclamationmark.triangle")
                         .font(.caption)
                         .foregroundStyle(.orange)
                 }
@@ -73,7 +73,7 @@ struct GatewayView: View {
             }
 
             if let updated = viewModel.gateway.updatedAt {
-                Text("Last updated: \(updated)")
+                Text("\(L.lastUpdated) \(updated)")
                     .font(.caption2)
                     .foregroundStyle(.tertiary)
             }
@@ -84,10 +84,10 @@ struct GatewayView: View {
 
     private var platformsSection: some View {
         VStack(alignment: .leading, spacing: 8) {
-            Text("Platforms")
+            Text(L.platforms)
                 .font(.headline)
             if viewModel.gateway.platforms.isEmpty {
-                Text("No platforms connected")
+                Text(L.noPlatformsConnected)
                     .font(.caption)
                     .foregroundStyle(.secondary)
             } else {
@@ -118,21 +118,21 @@ struct GatewayView: View {
 
     private var pairingSection: some View {
         VStack(alignment: .leading, spacing: 12) {
-            Text("Paired Users")
+            Text(L.pairedUsers)
                 .font(.headline)
 
             if !viewModel.pendingPairings.isEmpty {
                 VStack(alignment: .leading, spacing: 8) {
-                    Label("Pending Approvals", systemImage: "clock.badge.questionmark")
+                    Label(L.pendingApprovals, systemImage: "clock.badge.questionmark")
                         .font(.caption.bold())
                         .foregroundStyle(.orange)
                     ForEach(viewModel.pendingPairings) { pending in
                         HStack {
                             Label(pending.platform.capitalized, systemImage: platformIcon(pending.platform))
-                            Text("Code: \(pending.code)")
+                            Text("\(L.code) \(pending.code)")
                                 .font(.caption.monospaced())
                             Spacer()
-                            Button("Approve") {
+                            Button(L.approve) {
                                 viewModel.approvePairing(platform: pending.platform, code: pending.code)
                             }
                             .controlSize(.small)
@@ -147,7 +147,7 @@ struct GatewayView: View {
             }
 
             if viewModel.approvedUsers.isEmpty && viewModel.pendingPairings.isEmpty {
-                Text("No paired users")
+                Text(L.noPairedUsers)
                     .font(.caption)
                     .foregroundStyle(.secondary)
             } else {
@@ -163,7 +163,7 @@ struct GatewayView: View {
                                 .foregroundStyle(.secondary)
                         }
                         Spacer()
-                        Button("Revoke", role: .destructive) {
+                        Button(L.revoke, role: .destructive) {
                             viewModel.revokeUser(user)
                         }
                         .controlSize(.small)

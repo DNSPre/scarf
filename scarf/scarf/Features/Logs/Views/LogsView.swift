@@ -9,8 +9,8 @@ struct LogsView: View {
             Divider()
             logList
         }
-        .navigationTitle("Logs")
-        .searchable(text: $viewModel.searchText, prompt: "Filter logs...")
+        .navigationTitle(L.logs)
+        .searchable(text: $viewModel.searchText, prompt: L.filterLogs)
         .task { await viewModel.load() }
         .onDisappear { Task { await viewModel.cleanup() } }
     }
@@ -31,14 +31,14 @@ struct LogsView: View {
             Spacer()
 
             Picker("Level", selection: $viewModel.filterLevel) {
-                Text("All Levels").tag(LogEntry.LogLevel?.none)
+                Text(L.allLevels).tag(LogEntry.LogLevel?.none)
                 ForEach(LogEntry.LogLevel.allCases, id: \.rawValue) { level in
                     Text(level.rawValue).tag(LogEntry.LogLevel?.some(level))
                 }
             }
             .frame(maxWidth: 150)
 
-            Text("\(viewModel.filteredEntries.count) entries")
+            Text("\(viewModel.filteredEntries.count)\(L.string(" entries"))")
                 .font(.caption)
                 .foregroundStyle(.secondary)
         }
