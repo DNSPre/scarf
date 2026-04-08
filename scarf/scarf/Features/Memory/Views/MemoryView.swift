@@ -1,0 +1,89 @@
+import SwiftUI
+
+struct MemoryView: View {
+    @State private var viewModel = MemoryViewModel()
+    @Environment(HermesFileWatcher.self) private var fileWatcher
+
+    var body: some View {
+        ScrollView {
+            VStack(alignment: .leading, spacing: 20) {
+                if viewModel.hasExternalProvider {
+                    HStack(spacing: 8) {
+                        Image(systemName: "info.circle")
+                        Text(L.string("Memory is managed by \(viewModel.memoryProvider). File contents shown here may be stale."))
+                    }
+                    .font(.caption)
+                    .foregroundStyle(.orange)
+                    .padding(10)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .background(.orange.opacity(0.1))
+                    .clipShape(RoundedRectangle(cornerRadius: 8))
+                }
+                memorySection("Agent Memory", content: viewModel.memoryContent, charCount: viewModel.memoryCharCount, target: .memory)
+                memorySection("User Profile", content: viewModel.userContent, charCount: viewModel.userCharCount, target: .user)
+            }
+            .padding()
+            .frame(maxWidth: .infinity, alignment: .topLeading)
+        }
+        .navigationTitle(L.memory)
+        .onAppear { viewModel.load() }
+        .onChange(of: fileWatcher.lastChangeDate) {
+            viewModel.load()
+        }
+        .sheet(isPresented: $viewModel.isEditing) {
+            editorSheet
+        }
+    }
+
+    private func memorySection(_ title: String, content: String, charCount: Int, target: MemoryViewModel.EditTarget) -> some View {
+        VStack(alignment: .leading, spacing: 8) {
+            HStack {
+                Text(title)
+                    .font(.headline)
+                Spacer()
+                Text("\(charCount)\(L.string(" chars"))")
+                    .font(.caption)
+                    .foregroundStyle(.secondary)
+                Button(L.edit) {
+                    viewModel.startEditing(target)
+                }
+                .controlSize(.small)
+            }
+            if content.isEmpty {
+                Text(L.empty)
+                    .foregroundStyle(.secondary)
+                    .padding()
+            } else {
+                Text(markdownAttributed(content))
+                    .textSelection(.enabled)
+                    .padding()
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .background(.quaternary.opacity(0.5))
+                    .clipShape(RoundedRectangle(cornerRadius: 8))
+            }
+        }
+    }
+
+    private var editorSheet: some View {
+        VStack(spacing: 0) {
+            HStack {
+                Text(viewModel.editingFile == .memory ? L.editAgentMemory : L.editUserProfile)
+                    .font(.headline)
+                Spacer()
+                Button(L.cancel) { viewModel.cancelEditing() }
+                Button(L.save) { viewModel.save() }
+                    .buttonStyle(.borderedProminent)
+            }
+            .padding()
+            Divider()
+            TextEditor(text: $viewModel.editText)
+                .font(.system(.body, design: .monospaced))
+                .padding(8)
+        }
+        .frame(minWidth: 600, minHeight: 400)
+    }
+
+    private func markdownAttributed(_ text: String) -> AttributedString {
+        (try? AttributedString(markdown: text, options: .init(interpretedSyntax: .inlineOnlyPreservingWhitespace))) ?? AttributedString(text)
+    }
+}

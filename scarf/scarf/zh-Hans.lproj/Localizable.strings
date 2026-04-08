@@ -1,0 +1,295 @@
+/*
+  Scarf - Chinese (Simplified) Localization
+  Based on DNSPre/scarf fork
+*/
+
+// ============================================
+// App & Sidebar
+// ============================================
+"Scarf" = "Scarf";
+"Monitor" = "监控";
+"Projects" = "项目";
+"Interact" = "交互";
+"Manage" = "管理";
+"Dashboard" = "仪表盘";
+"Insights" = "使用分析";
+"Sessions" = "会话列表";
+"Activity" = "活动记录";
+"Projects" = "项目";
+"Chat" = "聊天";
+"Memory" = "记忆";
+"Skills" = "技能库";
+"Tools" = "工具集";
+"Gateway" = "网关";
+"Cron" = "定时任务";
+"Health" = "健康状态";
+"Logs" = "日志";
+"Settings" = "设置";
+
+// ============================================
+// Dashboard
+// ============================================
+"Hermes" = "Hermes";
+"Running" = "运行中";
+"Stopped" = "已停止";
+"Model" = "模型";
+"Provider" = "提供商";
+"Gateway" = "网关";
+"unknown" = "未知";
+"Usage Stats" = "使用统计";
+"Messages" = "消息数";
+"Tool Calls" = "工具调用";
+"Tokens" = "Token 消耗";
+"Cost" = "费用";
+"Recent Sessions" = "最近会话";
+"View All" = "查看全部";
+"No sessions found" = "暂无会话记录";
+
+// ============================================
+// Sessions
+// ============================================
+"Search messages..." = "搜索消息...";
+" sessions" = " 个会话";
+" messages" = " 条消息";
+"Export All" = "导出全部";
+"Search Results (" = "搜索结果 (";
+"Select a Session" = "选择会话";
+"Choose a session from the list" = "从列表中选择一个会话";
+"Rename..." = "重命名...";
+"Export..." = "导出...";
+"Delete..." = "删除...";
+"Delete Session?" = "确定删除会话？";
+"This will permanently delete the session and all its messages." = "此操作将永久删除该会话及其所有消息。";
+"Rename Session" = "重命名会话";
+"Session title" = "会话标题";
+
+// ============================================
+// Chat
+// ============================================
+"Active" = "活跃中";
+"No active session" = "无活跃会话";
+"Hermes binary not found" = "未找到 Hermes 可执行文件";
+"Session" = "会话";
+"New Session" = "新建会话";
+"Continue Last Session" = "继续上次会话";
+"Resume Session" = "恢复会话";
+"Voice On" = "语音开启";
+"Voice Off" = "语音关闭";
+"TTS On" = "语音播报开启";
+"TTS Off" = "语音播报关闭";
+"Recording..." = "录音中...";
+"Push to Talk" = "按住说话";
+"Toggle voice mode (/voice)" = "切换语音模式 (/voice)";
+"Toggle text-to-speech (/voice tts)" = "切换语音播报 (/voice tts)";
+"Push to talk (Ctrl+B)" = "按住说话 (Ctrl+B)";
+"Start a new session or resume an existing one from the Session menu above." = "从上方会话菜单中启动新会话或恢复现有会话。";
+"Hermes Not Found" = "未找到 Hermes";
+
+// ============================================
+// Activity
+// ============================================
+"All" = "全部";
+"All Sessions" = "所有会话";
+"Open session" = "打开会话";
+"Select a Tool Call" = "选择工具调用";
+"Choose an entry from the list" = "从列表中选择一条记录";
+"No Activity" = "无活动";
+"No tool calls found" = "未找到工具调用记录";
+"Arguments" = "参数";
+"Assistant Message" = "助手消息";
+
+// ============================================
+// Cron
+// ============================================
+"Cron Jobs" = "定时任务";
+"No Cron Jobs" = "暂无定时任务";
+"No scheduled jobs configured" = "尚未配置定时任务";
+"Enabled" = "已启用";
+"Disabled" = "已禁用";
+"Prompt" = "提示词";
+"Skills" = "技能";
+"Next run:" = "下次运行：";
+"Last run:" = "上次运行：";
+"Last Output" = "最近输出";
+"Select a Job" = "选择任务";
+"Choose a cron job from the list" = "从列表中选择一个定时任务";
+"Deliver:" = "通知方式：";
+
+// ============================================
+// Gateway
+// ============================================
+"Service" = "服务";
+"Start" = "启动";
+"Stop" = "停止";
+"Restart" = "重启";
+"running" = "运行中";
+"Loaded" = "已加载";
+"Service definition stale" = "服务定义已过期";
+"Last updated:" = "最后更新：";
+"Platforms" = "平台";
+"No platforms connected" = "未连接任何平台";
+"Paired Users" = "已配对用户";
+"Pending Approvals" = "待批准";
+"Code:" = "配对码：";
+"Approve" = "批准";
+"No paired users" = "无已配对用户";
+"Revoke" = "撤销";
+
+// ============================================
+// Memory
+// ============================================
+"Agent Memory" = "Agent 记忆";
+"User Profile" = "用户档案";
+"Empty" = "空";
+"chars" = "字符";
+"Edit" = "编辑";
+"Save" = "保存";
+"Edit Agent Memory" = "编辑 Agent 记忆";
+"Edit User Profile" = "编辑用户档案";
+
+// ============================================
+// Skills
+// ============================================
+"Filter skills..." = "筛选技能...";
+"files" = " 个文件";
+"Files" = "文件列表";
+"Select a Skill" = "选择技能";
+"Choose a skill from the list" = "从列表中选择一个技能";
+
+// ============================================
+// Projects
+// ============================================
+"Site" = "站点";
+"Updated:" = "更新于：";
+"No Dashboard" = "无仪表盘";
+"No Projects" = "无项目";
+"Select a Project" = "选择项目";
+"Add Project" = "添加项目";
+"Browse..." = "浏览...";
+"Add a project folder to get started. Create a .scarf/dashboard.json file in your project to define widgets." = "添加项目文件夹以开始使用。在项目中创建 .scarf/dashboard.json 文件来定义仪表盘部件。";
+"Choose a project from the sidebar to view its dashboard." = "从侧边栏选择一个项目以查看其仪表盘。";
+"Project Name" = "项目名称";
+"Project Path" = "项目路径";
+
+// ============================================
+// Health
+// ============================================
+"Status" = "状态";
+"Diagnostics" = "诊断信息";
+"Refresh" = "刷新";
+
+// ============================================
+// Logs
+// ============================================
+"Filter logs..." = "筛选日志...";
+"All Levels" = "所有级别";
+"entries" = " 条记录";
+
+// ============================================
+// Insights
+// ============================================
+"Period" = "时间段";
+"Overview" = "概览";
+"Models" = "模型";
+"No data" = "暂无数据";
+"Top Tools" = "常用工具";
+"Activity Patterns" = "活动规律";
+"By Day" = "按星期";
+"By Hour" = "按小时";
+"Notable Sessions" = "精选会话";
+"Open session" = "打开会话";
+"Sessions" = "会话";
+"Messages" = "消息";
+"User Messages" = "用户消息";
+"Tool Calls" = "工具调用";
+"Input Tokens" = "输入 Token";
+"Output Tokens" = "输出 Token";
+"Cache Read" = "缓存读取";
+"Cache Write" = "缓存写入";
+"Reasoning Tokens" = "推理 Token";
+"Total Tokens" = "总 Token";
+"Total Cost" = "总费用";
+"Active Time" = "活跃时长";
+"Avg Session" = "平均会话时长";
+"Avg Msgs/Session" = "平均消息/会话";
+"sessions" = " 个会话";
+"tokens" = " tokens";
+"msgs" = " 条消息";
+"Mon" = "周一";
+"Tue" = "周二";
+"Wed" = "周三";
+"Thu" = "周四";
+"Fri" = "周五";
+"Sat" = "周六";
+"Sun" = "周日";
+
+// InsightsPeriod enum
+"7 Days" = "7 天";
+"30 Days" = "30 天";
+"90 Days" = "90 天";
+"All Time" = "全部时间";
+
+// ============================================
+// Tools
+// ============================================
+"MCP Servers" = "MCP 服务器";
+"No MCP servers configured" = "未配置 MCP 服务器";
+"No MCP servers" = "无 MCP 服务器";
+"of" = "/";
+"enabled" = "已启用";
+
+// ============================================
+// Settings
+// ============================================
+"Open in Editor" = "用编辑器打开";
+"Reload" = "重新加载";
+"Model & Provider" = "模型与提供商";
+"Display" = "显示";
+"Personality" = "人格风格";
+"Streaming" = "流式输出";
+"Show Reasoning" = "显示推理过程";
+"Show Cost" = "显示费用";
+"Verbose" = "详细模式";
+"Terminal" = "终端";
+"Backend" = "后端";
+"Max Turns" = "最大轮次";
+"Reasoning Effort" = "推理强度";
+"Approval Mode" = "审批模式";
+"low" = "低";
+"medium" = "中";
+"high" = "高";
+"auto" = "自动";
+"manual" = "手动";
+"smart" = "智能";
+"Voice" = "语音";
+"Auto TTS" = "自动语音播报";
+"Silence Threshold" = "静默阈值";
+"Memory" = "记忆";
+"Memory Enabled" = "启用记忆";
+"Memory Char Limit" = "记忆字符限制";
+"User Char Limit" = "用户字符限制";
+"Nudge Interval" = "提醒间隔";
+"Paths" = "路径";
+"Hermes Home" = "Hermes 主目录";
+"State DB" = "状态数据库";
+"Config" = "配置文件";
+"Sessions" = "会话目录";
+"Skills" = "技能目录";
+"Logs" = "日志目录";
+"Raw Config" = "原始配置";
+"Show" = "显示";
+"Hide" = "隐藏";
+
+// ============================================
+// Common
+// ============================================
+"Cancel" = "取消";
+"Delete" = "删除";
+"Rename" = "重命名";
+"Add" = "添加";
+"Unknown:" = "未知：";
+"Reasoning" = "推理过程";
+"msgs" = " 条消息";
+"tools" = " 个工具";
+"reasoning" = " 个推理";
+"est." = "（估）";
