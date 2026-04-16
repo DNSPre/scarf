@@ -3,6 +3,7 @@ import Foundation
 struct HermesConfig: Sendable {
     var model: String
     var provider: String
+    var baseURL: String
     var maxTurns: Int
     var personality: String
     var terminalBackend: String
@@ -20,10 +21,20 @@ struct HermesConfig: Sendable {
     var approvalMode: String
     var browserBackend: String
     var memoryProvider: String
+    var dockerEnv: [String: String]
+    var commandAllowlist: [String]
+    var memoryProfile: String
+    var serviceTier: String
+    var gatewayNotifyInterval: Int
+    var forceIPv4: Bool
+    var contextEngine: String
+    var interimAssistantMessages: Bool
+    var honchoInitOnSessionStart: Bool
 
     static let empty = HermesConfig(
         model: "unknown",
         provider: "unknown",
+        baseURL: "",
         maxTurns: 0,
         personality: "default",
         terminalBackend: "local",
@@ -40,7 +51,16 @@ struct HermesConfig: Sendable {
         showCost: false,
         approvalMode: "manual",
         browserBackend: "",
-        memoryProvider: ""
+        memoryProvider: "",
+        dockerEnv: [:],
+        commandAllowlist: [],
+        memoryProfile: "",
+        serviceTier: "normal",
+        gatewayNotifyInterval: 600,
+        forceIPv4: false,
+        contextEngine: "compressor",
+        interimAssistantMessages: true,
+        honchoInitOnSessionStart: false
     )
 }
 

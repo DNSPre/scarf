@@ -11,8 +11,18 @@ struct SettingsView: View {
                 modelSection
                 displaySection
                 terminalSection
+                if !viewModel.config.dockerEnv.isEmpty {
+                    dockerEnvSection
+                }
+                if !viewModel.config.commandAllowlist.isEmpty {
+                    allowlistSection
+                }
                 voiceSection
                 memorySection
+                performanceSection
+                networkSection
+                advancedSection
+                backupSection
                 pathsSection
                 rawConfigSection
             }
@@ -21,6 +31,12 @@ struct SettingsView: View {
         }
         .navigationTitle(L.settings)
         .onAppear { viewModel.load() }
+        .confirmationDialog(L.removeCredentials, isPresented: $viewModel.showAuthRemoveConfirmation) {
+            Button(L.remove, role: .destructive) { viewModel.removeAuth() }
+            Button(L.cancel, role: .cancel) {}
+        } message: {
+            Text(L.clearCredentialsMsg)
+        }
     }
 
     private var headerBar: some View {
@@ -44,6 +60,21 @@ struct SettingsView: View {
         SettingsSection(title: L.model, icon: "cpu") {
             EditableTextField(label: L.model, value: viewModel.config.model) { viewModel.setModel($0) }
             PickerRow(label: L.provider, selection: viewModel.config.provider, options: viewModel.providers) { viewModel.setProvider($0) }
+            EditableTextField(label: L.baseURL, value: viewModel.config.baseURL) { viewModel.setBaseURL($0) }
+            HStack {
+                Text(L.credentials)
+                    .font(.caption)
+                    .foregroundStyle(.secondary)
+                    .frame(width: 130, alignment: .trailing)
+                Button(L.removeCredentials, role: .destructive) {
+                    viewModel.showAuthRemoveConfirmation = true
+                }
+                .controlSize(.small)
+                Spacer()
+            }
+            .padding(.horizontal, 12)
+            .padding(.vertical, 6)
+            .background(.quaternary.opacity(0.3))
         }
     }
 
@@ -59,6 +90,7 @@ struct SettingsView: View {
             ToggleRow(label: L.streaming, isOn: viewModel.config.streaming) { viewModel.setStreaming($0) }
             ToggleRow(label: L.showReasoning, isOn: viewModel.config.showReasoning) { viewModel.setShowReasoning($0) }
             ToggleRow(label: L.showCost, isOn: viewModel.config.showCost) { viewModel.setShowCost($0) }
+            ToggleRow(label: L.interimMessages, isOn: viewModel.config.interimAssistantMessages) { viewModel.setInterimAssistantMessages($0) }
             ToggleRow(label: L.verbose, isOn: viewModel.config.verbose) { viewModel.setVerbose($0) }
         }
     }
@@ -69,8 +101,27 @@ struct SettingsView: View {
         SettingsSection(title: L.terminal, icon: "terminal") {
             PickerRow(label: L.backend, selection: viewModel.config.terminalBackend, options: viewModel.terminalBackends) { viewModel.setTerminalBackend($0) }
             StepperRow(label: L.maxTurns, value: viewModel.config.maxTurns, range: 1...200) { viewModel.setMaxTurns($0) }
-            PickerRow(label: L.reasoningEffort, selection: viewModel.config.reasoningEffort, options: [L.string("low"), L.string("medium"), L.string("high")]) { viewModel.setReasoningEffort($0) }
-            PickerRow(label: L.approvalMode, selection: viewModel.config.approvalMode, options: [L.string("auto"), L.string("manual"), L.string("smart")]) { viewModel.setApprovalMode($0) }
+            PickerRow(label: L.reasoningEffort, selection: viewModel.config.reasoningEffort, options: ["low", "medium", "high"]) { viewModel.setReasoningEffort($0) }
+            PickerRow(label: L.approvalMode, selection: viewModel.config.approvalMode, options: ["auto", "manual", "smart"]) { viewModel.setApprovalMode($0) }
+            PickerRow(label: L.browserBackend, selection: viewModel.config.browserBackend, options: viewModel.browserBackends) { viewModel.setBrowserBackend($0) }
+        }
+    }
+
+    // MARK: - Docker Environment
+
+    private var dockerEnvSection: some View {
+        SettingsSection(title: L.dockerEnvironment, icon: "shippingbox") {
+            ForEach(viewModel.config.dockerEnv.sorted(by: { $0.key < $1.key }), id: \.key) { key, value in
+                ReadOnlyRow(label: key, value: value)
+            }
+        }
+    }
+
+    // MARK: - Command Allowlist
+
+    private var allowlistSection: some View {
+        SettingsSection(title: L.commandAllowlist, icon: "checkmark.shield") {
+            ReadOnlyRow(label: L.commands, value: viewModel.config.commandAllowlist.joined(separator: ", "))
         }
     }
 
@@ -88,9 +139,93 @@ struct SettingsView: View {
     private var memorySection: some View {
         SettingsSection(title: L.memory, icon: "brain") {
             ToggleRow(label: L.memoryEnabled, isOn: viewModel.config.memoryEnabled) { viewModel.setMemoryEnabled($0) }
+            if !viewModel.config.memoryProfile.isEmpty {
+                ReadOnlyRow(label: L.profile, value: viewModel.config.memoryProfile)
+            }
             StepperRow(label: L.memoryCharLimit, value: viewModel.config.memoryCharLimit, range: 500...10000) { viewModel.setMemoryCharLimit($0) }
             StepperRow(label: L.userCharLimit, value: viewModel.config.userCharLimit, range: 500...10000) { viewModel.setUserCharLimit($0) }
             StepperRow(label: L.nudgeInterval, value: viewModel.config.nudgeInterval, range: 1...50) { viewModel.setNudgeInterval($0) }
+            if viewModel.config.memoryProvider == "honcho" {
+                ToggleRow(label: L.honchoEagerInit, isOn: viewModel.config.honchoInitOnSessionStart) { viewModel.setHonchoInitOnSessionStart($0) }
+            }
+        }
+    }
+
+    // MARK: - Performance (v0.9.0)
+
+    private var performanceSection: some View {
+        SettingsSection(title: L.performance, icon: "bolt") {
+            ToggleRow(label: L.fastMode, isOn: viewModel.config.serviceTier == "fast") { on in
+                viewModel.setServiceTier(on ? "fast" : "normal")
+            }
+            StepperRow(label: L.notifyInterval, value: viewModel.config.gatewayNotifyInterval, range: 0...3600) { viewModel.setGatewayNotifyInterval($0) }
+        }
+    }
+
+    // MARK: - Network (v0.9.0)
+
+    private var networkSection: some View {
+        SettingsSection(title: L.network, icon: "network") {
+            ToggleRow(label: L.forceIPv4, isOn: viewModel.config.forceIPv4) { viewModel.setForceIPv4($0) }
+        }
+    }
+
+    // MARK: - Advanced (v0.9.0)
+
+    private var advancedSection: some View {
+        SettingsSection(title: L.advanced, icon: "slider.horizontal.3") {
+            ReadOnlyRow(label: L.contextEngine, value: viewModel.config.contextEngine)
+        }
+    }
+
+    // MARK: - Backup & Restore (v0.9.0)
+
+    @State private var showRestoreConfirm = false
+    @State private var pendingRestoreURL: URL?
+
+    private var backupSection: some View {
+        SettingsSection(title: L.backupRestore, icon: "externaldrive") {
+            HStack {
+                Text(L.archive)
+                    .font(.caption)
+                    .foregroundStyle(.secondary)
+                    .frame(width: 130, alignment: .trailing)
+                Button {
+                    viewModel.runBackup()
+                } label: {
+                    Label(L.backupNow, systemImage: "arrow.down.doc")
+                }
+                .controlSize(.small)
+                .disabled(viewModel.backupInProgress)
+                Button {
+                    if let url = viewModel.presentRestorePicker() {
+                        pendingRestoreURL = url
+                        showRestoreConfirm = true
+                    }
+                } label: {
+                    Label("Restore…", systemImage: "arrow.up.doc")
+                }
+                .controlSize(.small)
+                .disabled(viewModel.backupInProgress)
+                if viewModel.backupInProgress {
+                    ProgressView().controlSize(.small)
+                }
+                Spacer()
+            }
+            .padding(.horizontal, 12)
+            .padding(.vertical, 6)
+            .background(.quaternary.opacity(0.3))
+        }
+        .confirmationDialog(L.restoreFromBackup, isPresented: $showRestoreConfirm) {
+            Button(L.restore, role: .destructive) {
+                if let url = pendingRestoreURL {
+                    viewModel.runRestore(from: url)
+                }
+                pendingRestoreURL = nil
+            }
+            Button(L.cancel, role: .cancel) { pendingRestoreURL = nil }
+        } message: {
+            Text(L.restoreWarning)
         }
     }
 
@@ -104,7 +239,8 @@ struct SettingsView: View {
             PathRow(label: L.memory, path: HermesPaths.memoriesDir)
             PathRow(label: L.sessions, path: HermesPaths.sessionsDir)
             PathRow(label: L.skills, path: HermesPaths.skillsDir)
-            PathRow(label: L.logs, path: HermesPaths.errorsLog)
+            PathRow(label: L.agentLog, path: HermesPaths.agentLog)
+            PathRow(label: L.errorLog, path: HermesPaths.errorsLog)
         }
     }
 
@@ -265,6 +401,27 @@ struct StepperRow: View {
                 set: { onChange($0) }
             ), in: range)
             .labelsHidden()
+            Spacer()
+        }
+        .padding(.horizontal, 12)
+        .padding(.vertical, 6)
+        .background(.quaternary.opacity(0.3))
+    }
+}
+
+struct ReadOnlyRow: View {
+    let label: String
+    let value: String
+
+    var body: some View {
+        HStack {
+            Text(label)
+                .font(.caption)
+                .foregroundStyle(.secondary)
+                .frame(width: 130, alignment: .trailing)
+            Text(value)
+                .font(.system(.caption, design: .monospaced))
+                .textSelection(.enabled)
             Spacer()
         }
         .padding(.horizontal, 12)

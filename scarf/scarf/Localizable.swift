@@ -40,6 +40,7 @@ enum L {
     static var stopped: String { string("Stopped") }
     static var model: String { string("Model") }
     static var provider: String { string("Provider") }
+    static var baseURL: String { string("Base URL") }
     static var unknown: String { string("unknown") }
     static var usageStats: String { string("Usage Stats") }
     static var messages: String { string("Messages") }
@@ -246,4 +247,35 @@ enum L {
     static var cancel: String { string("Cancel") }
     static var add: String { string("Add") }
     static var reasoning: String { string("Reasoning") }
+    static var removeCredentials: String { string("Remove Credentials?") }
+    static var remove: String { string("Remove") }
+    static var clearCredentialsMsg: String { string("This will permanently clear all stored provider credentials.") }
+    static var credentials: String { string("Credentials") }
+    static var interimMessages: String { string("Interim Messages") }
+    static var performance: String { string("Performance") }
+    static var network: String { string("Network") }
+    static var advanced: String { string("Advanced") }
+    static var backupRestore: String { string("Backup & Restore") }
+    static var backupNow: String { string("Backup Now") }
+    static var restore: String { string("Restore") }
+    static var restoreWarning: String { string("This will overwrite files under ~/.hermes/ with the archive contents.") }
+    static var forceIPv4: String { string("Force IPv4") }
+    static var serviceTier: String { string("Service Tier") }
+    static var gatewayNotifyInterval: String { string("Gateway Notify Interval") }
+    static var contextEngine: String { string("Context Engine") }
+    static var honchoInitOnSessionStart: String { string("Honcho Init on Session Start") }
+    static var interimAssistantMessages: String { string("Interim Assistant Messages") }
+    static var dockerEnvironment: String { string("Docker Environment") }
+    static var commandAllowlist: String { string("Command Allowlist") }
+    static var browserBackend: String { string("Browser Backend") }
+    static var profile: String { string("Profile") }
+    static var honchoEagerInit: String { string("Honcho Eager Init") }
+    static var fastMode: String { string("Fast Mode") }
+    static var notifyInterval: String { string("Notify Interval") }
+    static var archive: String { string("Archive") }
+    static var restoreFromBackup: String { string("Restore from backup?") }
+    static var agentLog: String { string("Agent Log") }
+    static var errorLog: String { string("Error Log") }
+    static var commands: String { string("Commands") }
+    static var edit: String { string("Edit") }
 }
